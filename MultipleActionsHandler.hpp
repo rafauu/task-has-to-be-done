@@ -1,6 +1,7 @@
 #include <boost/algorithm/cxx11/all_of.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <unordered_map>
+#include <iostream>
 
 template <typename Type>
 class MultipleActionsHandler
@@ -15,12 +16,16 @@ public:
     void markAsDone(const Type& id)
     {
         holder.insert_or_assign(id, true);
+        std::cout << id << " marked as done" << std::endl;
     }
 
     void markAllAsDone()
     {
-        for(auto& id : holder)
-            holder[id] = true;
+        for(auto&& [id, isDone] : holder)
+        {
+            isDone = true;
+            std::cout << id << " marked as done" << std::endl;
+        }
     }
 
     bool isHandlingFinished() const
