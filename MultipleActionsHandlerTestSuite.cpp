@@ -3,22 +3,27 @@
 
 using ::testing::Test;
 
+namespace
+{
+using HandlerIdType = unsigned;
+using MultipleActionsHandlerT = MultipleActionsHandler<HandlerIdType>;
+
+constexpr HandlerIdType FIRST{1u};
+constexpr HandlerIdType SECOND{123u};
+constexpr HandlerIdType THIRD{7u};
+}
+
 struct MultipleActionsHandlerTestSuite : Test
 {
-    /* MultipleActionsHandlerTestSuite() */
-    /* { */
-        
-    /* } */
-    /* MultipleActionsHandler<unsigned, unsigned, unsigned> sut{MultipleActionsHandler{1u, 123u, 7u}}; */
-    MultipleActionsHandler sut{1u, 123u, 7u};
+    MultipleActionsHandlerT sut{FIRST, SECOND, THIRD};
 };
 
 TEST_F(MultipleActionsHandlerTestSuite, test)
 {
-    sut.markAsDone(1u);
-    sut.markAsDone(123u);
+    sut.markAsDone(FIRST);
+    sut.markAsDone(SECOND);
     ASSERT_FALSE(sut.isHandlingFinished());
-    sut.markAsDone(7u);
+    sut.markAsDone(THIRD);
     ASSERT_TRUE(sut.isHandlingFinished());
 }
 

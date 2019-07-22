@@ -1,7 +1,7 @@
-#include <any>
 #include <vector>
 #include <algorithm>
 
+template <typename Type>
 class MultipleActionsHandler
 {
 public:
@@ -11,12 +11,11 @@ public:
         (holder.emplace_back(Action{std::forward<Args>(args), false}), ...);
     }
 
-    template <typename T>
-    void markAsDone(const T& id)
+    void markAsDone(const Type& id)
     {
         auto it = std::find_if(holder.begin(),
                                holder.end(),
-                               [&](auto&& action){ return std::any_cast<T>(action.id) == std::any_cast<T>(id); });
+                               [&](auto&& action){ return action.id == id; });
         if (it != holder.end())
         {
             it->isDone = true;
@@ -33,7 +32,7 @@ public:
 private:
     struct Action
     {
-        std::any id;
+        Type id;
         bool isDone;
     };
     std::vector<Action> holder;
