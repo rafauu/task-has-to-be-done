@@ -6,7 +6,6 @@ using ::testing::Test;
 namespace
 {
 using HandlerIdType = unsigned;
-using MultipleActionsHandlerT = MultipleActionsHandler<HandlerIdType>;
 
 template <HandlerIdType N>
 constexpr HandlerIdType VALUE{N};
@@ -14,7 +13,7 @@ constexpr HandlerIdType VALUE{N};
 
 struct MultipleActionsHandlerTestSuite : Test
 {
-    MultipleActionsHandlerT sut{VALUE<1>, VALUE<2>, VALUE<3>};
+    MultipleActionsHandler<VALUE<1>, VALUE<2>, VALUE<3>> sut{};
 };
 
 TEST_F(MultipleActionsHandlerTestSuite, shallProperlyFinishHandlingAfterAllIdsMarked)

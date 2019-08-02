@@ -3,17 +3,18 @@
 #include <unordered_map>
 #include <iostream>
 
-template <typename Type>
+template <auto... Args>
 class MultipleActionsHandler
 {
+using Type = std::decay_t<std::common_type_t<decltype(Args)...>>;
+
 public:
-    template <typename... Args>
-    constexpr explicit MultipleActionsHandler(Args&&... args)
+    constexpr explicit MultipleActionsHandler()
     {
-        (holder.emplace(std::forward<Args>(args), false), ...);
+        (holder.emplace(std::forward<Type>(Args), false), ...);
     }
 
-    void markAsDone(const Type& id)
+    void markAsDone(Type id)
     {
         holder.insert_or_assign(id, true);
         std::cout << id << " marked as done" << std::endl;
